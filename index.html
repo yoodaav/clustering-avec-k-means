@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segmentation de Clients</title>
+   <link rel="stylesheet" href="static/style.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Segmentation de Posts Facebook</h1>
+        <p class="description">
+            Cet outil classe les posts Facebook en différents clusters basés sur leurs interactions.
+        </p>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="status_type">Type de statut:</label>
+                <select id="status_type" name="status_type" required>
+                    <option value="photo">Photo</option>
+                    <option value="video">Vidéo</option>
+                    <option value="status">Statut</option>
+                    <option value="link">Lien</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                {% for col in ['reactions', 'comments', 'shares', 'likes', 
+                              'loves', 'wows', 'hahas', 'sads', 'angrys'] %}
+                <div class="form-group">
+                    <label for="num_{{ col }}">Nombre de {{ col }}:</label>
+                    <input type="number" id="num_{{ col }}" name="num_{{ col }}" min="0" required>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn">Prédire le Cluster</button>
+        </form>
+
+        {% if show_result %}
+        <div class="result">
+            {% if prediction %}
+                <p class="success">{{ prediction }}</p>
+            {% elif error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
